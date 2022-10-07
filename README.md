@@ -12,4 +12,4 @@ Further changes will be added as the journey continues
 **Please feel free to contribute whatever you may like**
 
 Feel free to contact : 
-![Twitter](https%3A%2F%2Ftwitter.com%2Fbabe_eliza24)
+* **Twitter: babe_eliza24
