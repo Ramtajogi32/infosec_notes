@@ -1,0 +1,99 @@
+dir listing: the browser has a bad habit of listing out all the files of directory irrespective of the owner or group , but only in the absence of the index file , when the index file is present , it default loads the 
+file itself , but when it's not present , it loads everything: "sanjivni nai mili to pahad utha laaya" kinda thing
+
+there are various ways to stop this:
+way 1:
+ make the indexed file or any other one you specified to open in httpd.conf file
+
+way 2: through server end:
+ paste these lines in the httpd.conf file:
+ inside the virtual host that hosts your wensite
+    <Directory /var/www/html/wordpress>
+        Options -Indexes
+    </Directory>
+but still if you need to read any file , and know the name , you can read it still
+
+also if you want to enable listing in some cases: 
+
+<Directory /var/www/html/site1>
+
+        Options Indexes
+        Order allow,deny # order to read the code
+        Allow from <ip1> <ip2> .. # add only if you want specific ips to access this you can also give all as an option
+        Deny from <ip>...# to deny some ip
+</Directory>
+
+<Directory /var/www/html/wordpress>
+        Options -Indexes
+</Directory>
+
+way 3:
+ 
+ authenticate via id , password: 
+    <Directory /var/www/html/wordpress>
+        Options -Indexes
+        AllowOverride Authconfig
+    </Directory>
+
+and make an .htaccess file in the dir you want to authorize: eg: 
+AuthName "<username>"
+AuthType basic
+AuthUserFile /etc/httpd/htpasswd
+Require valid-user
+
+
+also make the auth file that we stated in the text: 
+command: htpasswd -c /etc/httpd/htpasswd <username>
+give the password and all
+
+
+HOME DIRECTORY LISTING:
+vim /etc/httpd/conf.d/userdir.conf
+
+first enable the UserDir: UserDir enabled
+then uncomment the last line public_html one , save and exit
+create user: useradd <name> ,give passwd etc...
+then create the dir public_html : mkdir /home/<user>/public_html , give owneership to user
+give executing permission to user dir: chmod 711 /home/<user>
+
+
+
+
+# #         DocumentRoot /var/www/html/site1
+# #         DirectoryIndex index1.html
+# # </Virtualhost>
+
+# # <VirtualHost 192.168.29.248:80>
+# # 	ServerName drona.acharya.local
+# #         DocumentRoot /var/www/html/site1
+# #         DirectoryIndex index.html
+# # </VirtualHost>
+
+# <Virtualhost 192.168.29.248>
+# #        SSLEngine on
+# #        SSLCertificateFile /etc/pki/tls/certs/ca.crt
+# #        SSLCertificateKeyFile /etc/pki/tls/private/ca.key
+#         ServerName drona.acharya.local
+#         DocumentRoot /var/www/html/site1
+#         DirectoryIndex index.php
+
+#     	<Directory /var/www/html/site1>
+# 		AllowOverride Authconfig
+#         	Options -Indexes
+#     	</Directory>
+# </Virtualhost>
+# Listen 8080
+# <Virtualhost 192.168.29.248:8080>
+# #        SSLEngine on
+# #        SSLCertificateFile /etc/pki/tls/certs/ca.crt
+# #        SSLCertificateKeyFile /etc/pki/tls/private/ca.key
+# #        ServerName drona.acharya.local
+#         DocumentRoot /var/www/html/wordpress
+#         DirectoryIndex index.php
+
+#     	<Directory /var/www/html/wordpress>
+# #		AllowOverride Authconfig
+#         	Options -Indexes
+#     	</Directory>
+
+# </Virtualhost>

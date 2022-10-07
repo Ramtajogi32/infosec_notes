@@ -1,0 +1,70 @@
+ftp runs on port 21
+first do
+ rpm -qa | grep ftp 
+ if you have 2 packages saying ftp , vsftpd , well and good if not do this: yum install vsftpd ftp
+    vsftpd is the server and ftp is the client
+
+    do rpm -qc vsftpd-3.0.2-29.el7_9.x86_64  or your package for vsftpd via rpm -qa | grep ftp
+
+    the main file is the /etc/vsftpd/vsftpd.conf
+    we'll open it in vim , see there's a variable called anonymous_enable=YES , this allows the users to login anonymously, without correct password
+    we'll have to add some anonymous lines to allow the prt ranges and all so that we could access the server:
+
+    pasv_min_port=55000
+    pasv_max_port=55999
+    pasv_enable=YES
+
+    give any range you want 
+    systemctl restart vsftpd 
+    systemctl enable vsftpd - if you want to enable it after pc starts
+    if you have iptables enabled , allow the port :
+        -A input -p tcp --dport 21 -j ACCEPT
+        -A input -p tcp --dport 55000:55999 -j ACCEPT
+
+        we can access the only files through ftp which is in the dir called: /var/ftp, give those files 777 permissions for ftp server to access them
+
+        then if you use the creds : ftp:<any passwd> , you can login to ftp server
+        you can type help for variious commands that you can execute , also you can also get files via get <filename> or multiple files via mget <file1> <file2>
+        to get the  server location : use pwd
+        to get the local location of machine: lcd
+        here ls command doesn't work , instead there's a combination:
+        lcd + tabkey
+
+        there are various moeds that are enabled to transfer certain files:
+        default mode is ascii and for binary files it's binary mode
+        we can switch modes just by typing their names
+
+        now we use FILEZILLA to use ftp service in GUI based OS , so to use filezilla first we need to do some things in server:
+            go to vsftpd.confwe can also use file browser of windows - ftp://<ip>
+
+
+            FILEZILLA:  
+                give the ip in the ip box and no username and passwd , if the anon login is snabled , if not use the creds, it's simple to use , double click on the file
+                to download or right click and choose download , also we can drag and drop if the permission is there for the user
+
+        NOW go to conf file again and change the anonymous_enable=NO
+        line no. 101 : chroot_local_user=YES, uncomment it , also add this allow_writeable_chroot=YES at last befor the pam_service
+
+        now ftp user won't be able to login
+        but we can use local users to login anywhere , ps: you can't lgin via root now , why read ahead
+        
+        go to conf file again: chroot_list_file=/etc/vsftpd/chroot_list uncomment it , if this file is not there , make it
+        add at last: 
+        userlist_enable=YES
+        userlist_file=/etc/vsftpd/allow_users
+        userlist_deny=NO
+        
+        this will be our allow list , make it via vim , if you give the manes in the file , they will only be able to login
+        
+        we want only selected users to not to login: go to /etc/vsftpd/user_list - add name so that they won't be able to login ,see this file , root is included , just make it
+        a comment , root is a powerful user , ftp land in root's dir, it can be dangerous
+
+        please comment out the users from the ftpuser and user_list , before adding to the allow_user list or they won't be able to login
+
+
+
+        what if we want to change location of access of ftp users:
+            go to conf file and add this line
+            local_root=/<directoryname>
+
+            then the directory will appear everytime a user logs into ftp

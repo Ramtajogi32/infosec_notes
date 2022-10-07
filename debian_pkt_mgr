@@ -1,0 +1,62 @@
+vi etc -> netwrk/interfacwa
+apt install bash*
+install net-tools
+install openssh -server
+permitRootlogin = yes		
+
+if no repo , no packet is installed first ensure the repo is enabled in source.list
+
+> apt install apt-transport-https
+then convert http to https in source.list
+
+> apt list = lists all pkgs
+> apt full-upgrade = to upgrade all the utilities
+> apt dist-upgrade = to upgrade the distro
+
+> apt search vlc
+> apt show vlc {just like yum info}
+
+
+> apt depends <pkt>
+and rdepends
+
+depends : as the name states, this dependency is needed in order for the program to run. Without it, the program cannot start at all;
+recommends : without this dependency, the program would be able to run but it would not provide all the features that this tool is designed to provide;
+suggests : without this dependency, the program would be able to run and provide core functionalities but it would not be the final version of the tool;
+enhances : this dependency can enhance the actual tool by improving performance or display but it is not needed at all.
+
+> apt showsrc <pkt>
+
+> apt source <pkt>
+
+> apt changelog <pkt>
+
+> apt --fix-broken install <pkg> = fixes thw broken packages when updating or upgrading confronts an error
+
+> apt-file search /bin/bash = to search pckgs
+
+> Hold and Unhold Package
+When a package is marked as hold then that package will not be upgraded till it is marked as unhold again.Let’s assume we want to mark nginx as hold the run beneath command:
+sudo apt-mark hold nginx
+then use other cmmnd then unhold it : sudo apt-mark unhold nginx
+
+> Edit Sources (sources.list)
+Apt command refers /etc/apt/sources.list for package repository url. Using ‘apt edit-sources’ command, sources.list file can be edited, example is shown below:
+sudo apt edit-sources
+
+
+> apt-cache policy <pkg> at was broken into several pieces before where each piece did  it's own work , the what happended they created one single apt to do everything , before it was like cache will handle cache related stuff , get handles get requests , that's why they use apt-get now
+
+
+
+
+                      DPKG
+                      
+ > TO SEE NO. OF PACKAges installed: dpkg -l
+ 
+ dpkg -s <pkg name> : gives info abt packages
+ dpkg  -L <pkgname> : list and location of pkgs installed
+ dpkg-deb -xv <.deb pkg> <location where to extract>
+ dpkg -S /bin/sh = from where this bin file is derived {can be any other file}
+ dpkg-query --search "<file>"
+ 

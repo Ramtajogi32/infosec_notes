@@ -1,0 +1,62 @@
+how to give ip to the machine:
+
+first we give hostname:
+>  vim /etc/hostname = there is fqdn written <servername>.<domainname>
+
+for hidden interfaces = ifconfig -a	OR ip ad
+for particular interface details: ifconfig <int>
+
+
+nmtui = change the networking stats like ip , dns , hostname etc... in a GUI form
+or go to : /etc/sysconfig/network-scripts: there'll be a file like"ifcfg-<interface>" 
+> to give ip from dhcp edit BOOTPROTO=dhcp 
+
+> for  static change BOOTPROTO to none and IPADDR=<ip>
+GATEWAY,DNS1,DNS2,PREFIX=<subnet like 24>
+
+> to temporary change the ip: ifconfig <interface> <ip you wanna give> = remains until pc or service restarts
+
+> to enable , disable interface: ifconfig <int> up/down
+
+> to disable interface at kernel level : ifdown <int> 
+ifup <int> usually done to change the details like MAC
+
+> to change the gateway: route -n {gives details}
+route add default gw <ip> <interface> = adds gateway
+route del default gw <ip> <interface> = deletes gateway
+it's a temp command
+
+> ping command -
+ping <ip> -s <size of packets> -c <number of pkts> -i <interval in sec> -p <pattern> 
+ping -6 = to ping ipv6
+ping -f
+
+> traceroute = to check how many nodes are there in our connections
+tcp traceroute = same
+tracepath = same
+
+> hwo many  services are running :
+netstat <flag>: -a = all
+-t = tcp
+-u = udp
+-n = numbers	
+
+netstat -nltp = l is for listen , n = number , t= tcp , 
+
+note : if netstat is not there use "ss"  same switches and working
+
+
+
+IN DEBIAN:
+/etc/network = edit it
+fordhcp ip = iface <int> inet dhcp and comment the rest below it
+
+for static:
+iface <int> inet static
+	address <ip>
+	netmask <subnet>
+	network <network ip belongs to eg: 192.168.1.0>
+	broadcast <last ip of network>
+	gateway <>
+	dns-nameservers <dns>
+	

@@ -1,0 +1,42 @@
+iptables:
+install the supporting packages for iptables also:
+
+systemctl status iptables.service
+systemctl status firewalld.service
+systemctl mask firewalld.service , if we leave it marked , its good no need to uninstall
+
+systemctl start iptables.service
+systemctl start ip6tables.service
+
+systemctl enable iptables.service
+systemctl enable ip6tables.service {to start at startups}
+
+iptables -L = rules
+iptables -L -n  = rules in numeric form
+
+iptables -n -L <particular chain name>
+iptables -n -L --line-numbers
+
+same rules goes to ip6tables
+
+
+rule 1 says accept all protocol(target) from whichever source to which ever dest ip of server
+
+
+now rule 2 says : which pkt want to pass icmp 
+then rule 3 says transport layer all pkts whether tcp or udp protocol
+nc -nlvp <port>
+to check it runs = netstat -nltup 
+
+can't connect now due to fw , so we allow it 	
+iptables -A INPUT -p tcp --dport 21 -j ACCEPT
+iptables -A <service> -p <which network protocol> --dport <port> -j <action>
+
+iptables -I INPUT 4 -p tcp --dport 21 -j DROP
+
+if wireshark says RST ,ACK in reply to our SYN - either its down {service} or pct rejected	
+
+
+to delete rule:
+iptables -D INPUT <line no.>
+

@@ -1,0 +1,26 @@
+sevrices are located in: /etc/init.d
+to deal with the particular service: ./<file>
+
+to see the status of the particular service: netstat -nltup or <file> status
+
+commmands: force-reload , reload ,restart , stop , --full-restart
+
+some srvcs can also be found at /usr/lib/systemd/system
+
+for old linux: service command and new as systemctl also
+service --status-all
+
+systemctl --type=service --status=running
+systemctl list units
+systemctl status apache2.service
+
+
+ANTIVIRUS: 
+sudo apt install clamav*
+freshclam - to update the db of the antivirus	
+
+only for parent folder to scan: clamscan <folder>
+use -r to scan every sub dir
+-i to list infected file
+
+--remove

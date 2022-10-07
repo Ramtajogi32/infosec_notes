@@ -1,0 +1,31 @@
+we first instert the iso file of the centos and mount it from /dev/sr0 to /mnt/ then we go to the centos folder ni mnt and see the packages in the iso file,
+then we cpy them in other location in /centos  , then we unmount it via umount /mnt/
+
+also if you have the iso downloaded ,just mount it via this command:
+mount -t iso 9660 <loaction where it is> <location to mount>
+
+now we need to get this package ,it's there in centos-everything but if not please install as we'll be making a DB with all the packages we have + the dependencies they require , we'll create a repo and for that we need this package:
+                        createrepo-0.9.9-28.el7.noarch.rpm
+
+this create repo hasi itself 2 dependencies: delta-rpm and python-deltarpm
+
+now we give the command: createrepo -v --database <location of packages in centos> what it does is it reads all packages and creates the database
+since we never defined the location to where to put the DB , it makes it in the same location : named repodata -> a sql database
+we can create it anywhere via -o
+
+
+
+now we havw the DB but we need it to link with yum go to /etc/yum.repos.d then yum repolist all , gives list of all repo
+clean everything via yum clean all , it cleans all the cache of repos, to make it again yum repoall
+the repos we see are all online but we want everything offline so clean first
+then move everthing of this yu.repos.d to anywhere, or disable it  we need the offline repos here
+create a file <name>.repo we'll put some info in it
+
+[centos7]   # this should be unique , no special chars
+name=Centos 7 Everything
+baseurl=file:///home/acharya/centos/Packages/ # server location or local location
+gpgcheck=0 #
+
+
+
+if this doesn't work move centos7 to root

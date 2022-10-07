@@ -1,0 +1,299 @@
+this is jus the rough path for recon , just to get started , there are better methodologies  than this but keeping in touch with roots is also good...
+
+
+
+Recon:
+	always look at the surface first and then go in depth , what if the things are on there surface
+	
+	let's say we have  " *.tesla.com "
+	target:
+		> employee detail
+			# username
+		
+		> location
+		
+		> address
+		
+		> phone numbers
+		
+	2. find these:
+		> sitemap.xml - user map
+		> sitemap.html - 
+		>robots.txt - to disallow google spidering to show these or not to index these
+		> readme.html/txt
+		>liscence.txt
+		
+		
+	3.we can also generate sitemap via sitemap generator
+		
+		> link extractor:
+			extract all the links that are being used by the site
+		
+		> seo-spider 
+	4.  mirroring the website 
+			# linux - wget -m
+			#windows - httrack
+		
+	5.Wayback machine
+		check for previous versions for the website , may find some vulnerabilities that may persist even now
+		
+		github [tool]:  tomnomnom's waybackurl - install golan for this and also install this tool in go lang's bin folder
+		
+		[tool] whatweb - for the terminal based website analyser like the wappanalyzer and the builtwith
+		 
+		 [tool] security trails- this gives the real ip of the website that can be scanned becoz , the cloudfare can defend the website very great , we need to see the real ip behind this proxy ip , can also do with various things like ssrf and all
+		
+		[tool] find a tool for site ranking
+	
+	6. Website Built with what ?:
+		builtwith.com
+		wappalyzer	
+		
+	7.whois :[#] linux whois command 
+		[#]godaddy whois database
+		[#]who.is - site
+		
+		[#]whoxy.com = the dns server engine , gives the related details also 
+		
+	reverse whois: 
+		[#]viewdns.info = *** tools for dns site *** - it also gives all the report for all records at once , remember , when the CDN ip is not showing or any other proxy , that ip is actual ip
+		[#]reversewhois.io
+		
+		
+	but why do we do this? : to get the service provider and to look at the other details like when was made and all , so that we get estimate what might we have to face while pentesting
+
+
+	[#] iptolocation.com
+	[#] google admin toolbox = https://toolbox.googleapps.com/apps/main/
+	[#]centralops.com
+
+	[#]keycdn.com = iplocation finder - more accurate
+	[$] traceroute/traceroute6 (terminal) - traceroute <ip> - gives the nodes btw the ip and us
+	[$]tracepath <ip>
+
+	when you get the real ip from the  whois we take that ip
+	 to security trails 
+	 
+	 when you need to know that the ip is real or not , then make an entry of the ip to hostfile and then we can seee whether the ip is taking is to the domain or not
+	 
+	 take the ip from the viewdns or anyother good website and 
+	 
+	 dig armourinfosec.com ns
+	 nslookup -type=ns armourinfosec.com
+	 
+	 get master nameserver record from SOA records
+	 dig <ip> soa - the first server is the nameserver
+
+	reverse ip domain lookup:
+		[#]reverse ip domain check
+
+	now we check the mail server:
+		dig <ip> mx
+		go to viewdns: and go to mxlookup
+		
+link hijacking vulnerability:
+	link extractor
+	
+	
+ NOW WE GOT THE IPs , WE'LL SCAN THE PORT OF THE IP:
+ 	we do the PASSIVE scan first via : open port finder
+ 	or via : viewdns portscanner
+ 	
+ 	some great writeup guys for recons: GodFatherOrwa
+ 	 jason haddix
+ 
+	 8. Google Dork:
+		 how do search engines work?
+		 	google webmaster - website me kya kami hai
+		 	 google analytics - what is the reach of website
+		 works on the principle that says the more the words in the query search the less and precise the results are
+		 
+		 
+		 -> when you want range: give the dots btw the values
+		 	like you want price range
+		 	$1000...$2000 <keyword>
+		 	 
+		-> wildcard "*"  , when we want the all records related to the specific query like: how to make * with tomatoes
+		-> focus on specific keyword : use single or double quotations
+		
+		-> OR keyword
+		-> + operator for keywords 
+		
+		
+	advanced operators:
+	rules:	
+		no space btw the operator and search term
+	
+	operators:
+		intitle:
+		allintitle: 
+		inurl: url must contain these keywords
+		allinurl:
+		intext: url ,title , decription , kahi bhi mile
+		site: 
+		site: *.gov.in inurl:wp-admin
+		site:apple.com inurl:admin-login -apps
+		filetype: xls, pdf , 	
+		site:gov.in filetype:xls student account
+		inanchor: contains the link 
+		related: <keyword>
+		cache:
+		input:
+		
+		index of .dcim - give me the index of dcim folder
+		filetype:pdf username password @gmail.com
+		webarch/mainframe.cgi
+		
+		site:*.tesla.com -www -shop -meet -ehs 
+		site:armourinfosec inurl:admin
+		site:gov.in phpmyadmin
+		intitle:whatsapp
+		inurl:paypal	intitle:"index of" backup | github |  php
+		
+		we can also get the google dorks premade from "google hacking database" from exploit db
+		like -> 
+		dork the number of servers working on vulnerable services
+		tool - for google dorking "theharvester" not much but workable
+		tool - metagofil
+		 metagoofil -d armourinfosec.org -1 20 -t pdf -n 20  -o doc
+		 
+	9. shodan:
+		these are all dork examples: change as you need:
+		[#]net:192.31.242.0/24 - gives the devices available in network
+		[#]net:192.31.242.0/24 port:80 
+		[#]net:192.31.242.0/24 port:80 product:"Microsoft httpd service"
+		[#]net:192.31.242.0/24 port:80 os:"windows xp"
+		
+		[#]org:"organization name"
+		[#]country:"US"
+		[#]geo:"<lat> <long>"	
+		[#]title:"intitle like google"
+		
+		shodan also has the power to access the ssl certs: just take the official name of cert from the site info and then give the dork-> ssl:"<cert>" and then we get the cert info as well as the ip's it runs
+		ssl.cert.subject.cn:"<common cert name>"
+		
+		check the favicons also sometimes they alter everything and favicons remain same so this reveals something too
+		
+		we can also use the api that is the fast solution but restricts the search to limited 
+		[tool] shodan api tools, shodan terminal:
+			apt install python3-shodan, then we'ed have to configure it wrt to api
+			
+				[#]shodan init <apikey>
+				[#] shodan search
+					while searching there is no colon applied in the terminal , whereas give the spave instead of it
+					-h for help
+					
+					also google: how to download data with shodan if any error persists
+				[#] shodan download <query> -> download the query results
+	
+	
+	10. github recon:
+		[#] start eith the name of the firm itself , then go dtep by step adding thr keywords as you like :
+			"tesla.com" -> "tesla.com" <keywords>
+			keywords like: password , passwd , key , api , login, ftp ,token , {ss is there in pictures (sublime)}
+			developers tend to be adding the loose ends and we get the privelage to exploit them
+			
+		[#] <domain> filename:<filename> like dockercfg_auth (you need to know which files have the passwords ) , id_rsa (client side), id_dsa , aws_access_key_id, ssh_key, s3cfg , manifest.xml ,vim_Settings.xml,sftp-config.json, secrets.yml
+
+		target the developers , they have the loose ends most of the time , they do all the back-end stuff
+		
+		[#] fileextensions -> extension:<fileextension>
+		 
+		 [#] check the linkedin for the employees and then find them on github , search their repos. Filter the result in the linkedin for devs and check their repos for leaked info , manually 
+		 they may have the alias and thus check for their contribution for open source and can get thier alias
+		
+		[###] https://github.com/techgaun/github-dorks.git   -> github dorks
+		[###] godfather orwa's : https://orwaatyat.medium.com/your-full-map-to-github-recon-and-leaks-exposure-860c37ca2c82 [**** this guy also gave the tools to automate ****]
+		
+		REMEMBER MANUAL IS THE BEST , DON'T ALWAYS RELY ON AUTOMATION 
+		
+		
+		
+		
+							
+					"Company/domain" 
+					"Company/domain" password
+					"Company/domain" key
+					"Company/domain" secret
+					"Company/domain" credentials
+					"Company/domain" pass
+					"Company/domain" pwd
+					"Company/domain" api
+					"Company/domain" token
+					"Company/domain" login
+					"Company/domain" ftp
+					"Company/domain" config
+					"Company/domain" conf
+					"Company/domain" ssh
+					"Company/domain" security_credentials
+					"Company/domain" connectionstring
+					"Company/domain" jdbc
+					"Company/domain" ssh2_auth_password
+					"Company/domain" send_keys or send,keys
+					filename:manifest.xml
+					filename:travis.yml
+					filename:vim_settings.xml
+					filename:database
+					filename:prod.exs NOT prod.secret.exs
+					filename:prod.secret.exs
+					filename:.npmrc _auth
+					filename:.dockercfg auth
+					filename:WebServers.xml
+					filename:.bash_history <Domain name>
+					filename:sftp-config.json
+					filename:sftp.json path:.vscode
+					filename:secrets.yml password
+					filename:.esmtprc password
+					filename:passwd path:etc
+					filename:dbeaver-data-sources.xml
+					path:sites databases password
+					filename:config.php dbpasswd
+					filename:p
+
+
+	in red teaming we go to the team details but not in pentest , or in bug bounty
+	
+
+	11. OSINT framework:	{osintframework.com}
+		"there's a website called: have i been pwned"	that contains the emails that are in the databases
+		which are public or compromised
+		there's also one more like this: dehashed.com
+		ghostproject.fr, intelx.io
+		even sir has a video for this: https://www.youtube.com/watch?v=_L3Mu-S9rVM
+		
+		when you want to verify that the email is there or not:
+			verify-email.org, emailrep.io
+		for us client: pipl website , insta and facebook are still the top
+		for email related info : mxtoolbox.com
+		there are the : DMRC records the above tool uses the dmrc records
+		namechk.com : where the account exists on different platforms
+		namecheckr.com: name exists on platforms like social media or not
+		there's a script also called: whatsmyname on github doing same thing on cmdline
+		
+		imagesearch in images , search in the osint framework -> google images
+									tineye images 
+									worldlii.com - for crime records
+									
+	12. how to find the public ip:
+			while getting hands-on the ip , always first see the service provider and check whether the isp is providing for that particular region or not
+			
+			resolve ip via dig <name> 
+			the go to iptolocation.net and put the ip
+				it can be self hosted or some other region is shown
+				when we can't get the public ip , we try to give him our server's link and our server will have the log and it's public ip: grabify.link	, use this to create a link and paste the real url that you wanna make the guy visit , this way we get the public ip , we not trying to phish 
+				
+				if you are a linux user give the command: "curl ifconfig.me" for getting public ip
+				
+			or if you have the server and you want to store the ip seperately you can there's php script that we can give to index.html , converting it to index.php
+			
+	13.	callerid sniffing:
+		crazycall.net
+						
+				
+	
+some keywords:		 	 
+kevin mitnick and his books (start with the ghost)
+dumpster diving on google
+edward snowden
+
+

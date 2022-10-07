@@ -1,0 +1,67 @@
+DHCP SERVER IN LINUX :
+step 1- install pkg
+step 2 - configure the file 
+step 3- restart service
+step 4- allow the service to run for firewall
+
+
+-> yum repolist all
+install dhcp 
+then there's a file called dhcpd.conf.example  = that gives the example and instructions to see 
+ 
+change this file : /etc/dhcp/dhcpd.conf
+
+this is the format
+authoritative; 
+# we use authoritative when we use ADDS so that it gets authority to give IPs
+       #specify network address and subnet mask
+        subnet 192.168.1.0 netmask 255.255.255.0{
+       }
+                #specify the range of lease IP address
+                range 192.168.1.50 192.168.1.250;
+                #specify default gateway
+                option routers 192.168.1.1;
+                #DNS servers for name resolution
+                option domain-name-servers 8.8.8.8,8.8.4.4;
+                #specify broadcast address
+                option broadcast-address 192.168.1.255;
+                #default lease time
+                default-lease-time 600;
+                #max lease time
+                max-lease-time 7200;
+
+
+then : netstat -nltup 
+	dhcp runs on udp 67 for server aand 68 for client
+	systemctl start dhcpd.service
+	note: service won't start if there's a config mistake
+	
+vim /etc/sysconfig/iptables
+	allow port 67 
+	
+to give single ip: just give the single ip as range stating and ending both : 192.168.1.22 192.168.1.22
+
+to give a particular ip to a particular client:
+
+host <hostname>{
+                #MAC address of client for fix ip
+                hardware ethernet 08:00:27:5d:b8:bc;
+                #IP address for client
+                fixed-address 192.168.1.201;
+               }
+               
+               
+allow list : give the line at last of the msg from line 15 in text : deny unknown-clients
+
+
+or do this: host <hostname> {hardware ethernet <mac add> ;deny booting } and remove the line deny unknown-clients
+
+to allow and deny acc to condition: 	
+	make a pool , like this:
+		pool{
+				range < start ip> <end ip>
+			}
+then provide bthis:
+host <hostname> {hardware ethernet <mac add>}
+
+creating multiple pools will apply as respectively to the host as in number

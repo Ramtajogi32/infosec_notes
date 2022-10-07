@@ -1,0 +1,85 @@
+so when we install the service called httpd we get to know that the main file is httpd/conf/httpd.conf which can be seen in a particular location by 
+rpm -qc httpd-2.4.6-95.el7.centos.x86_64 , or your pkg name , check via:
+rpm -qa | grep httpd
+
+allow the firewall to run server on port 80
+fot iptables:
+-A INPUT -p tcp -m tcp --dport 80 -j ACCEPT 
+
+keep your html , php files in the /var/www/html , change the user to apache via chown apache <file> ,uske bina bhi kaam ho jayega but still
+remember to disable the sestatus  ,it messes up the config
+type: sestatus
+go to /etc/sysconfig/selinux - disable it
+
+now we come to the part where we change the content of the /etc/httpd/conf/httpd.conf file
+
+there are 4 types of configs: 1. via port 2. via ip 3. via name 4. via type 
+
+if you want to change location of the website docs to be browsed : 
+change the DocumentRoot variable in the file, if you want to change the name of the file it calls from index to any other: change the IfModule tag
+
+2. VIA IP:
+
+place this at the last of the file:
+<VirtualHost 192.168.29.248:80>
+        DocumentRoot /var/www/html/site1
+        DirectoryIndex index.html
+</VirtualHost>
+
+for eerror check use: httpd -t	
+for different ips do the same virtual host text, place it in same manner in the httpd file
+
+3. via name
+<VirtualHost 192.168.29.248:80>
+	ServerName drona.acharya.local
+        DocumentRoot /var/www/html/site1
+        DirectoryIndex index.html
+	ServerAlias www.drona.acharya.local
+</VirtualHost>
+
+sequence matters ,also check the dns forward zone file and edit if required , or to point different ip if needed
+
+
+
+INSTALL HTTPS AND SSL CERT IN OUR SITE:
+yum install mod_ssl
+it installes the file somewhat like this: mod_ssl-2.4.6-95.el7.centos.x86_64
+do rpm -ql mod_ssl-2.4.6-95.el7.centos.x86_64 
+we get to see the Httpd/ssl.conf file , this is the main file that we'll use to configure ssl
+
+restart the service , alllow the port for the firewall , 443 port , 
+from the /etc/httpd/conf.d/ssl,conf grep these two lines : 
+        SSLCertificateFile /etc/pki/tls/certs/localhost.crt
+        SSLCertificateKeyFile /etc/pki/tls/private/localhost.key
+
+we'll paste them in our file httpd.conf file
+
+it should look like this: 
+<Virtualhost 192.168.29.248:80>
+    SSLEngine on
+    SSLCertificateFile /etc/pki/tls/certs/localhost.crt
+    SSLCertificateKeyFile /etc/pki/tls/private/localhost.key
+	ServerName drona.acharya.local
+    DocumentRoot /var/www/html/site1
+	DirectoryIndex index.html
+    
+
+</Virtualhost>
+
+
+now we'll generate our own public and pvt key ,
+
+openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 
+
+now paste cert.pem in the file folder: /etc/pki/tls/certs/cert.pem
+and key in /etc/pki/tls/private/key.pem
+change the file location of the SSLCertificate in the .conf file in httpd
+
+when we restart the service we get this prompt that the password that we provided during the key generation , we nee dt type that every time so to skip this step here's the procedure:
+openssl genrsa -out ca.key
+
+then we convert it to another  file: openssl req -new -key ca.key -out ca.csr , we'll generate pvt keyusing this:
+openssl x509 -req -days 365 -in ca.csr -signkey ca.key -out ca.crt
+place the files in certs and private - crt and key respectively
+
+

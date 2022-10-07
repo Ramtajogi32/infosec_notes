@@ -1,0 +1,41 @@
+package dump = what is it , how to do with rspbry pi?
+what is a client tool? qre there any other categories too?
+
+NIC: card :
+1. pci lan card
+
+mac address:
+	physical adderss , of 12 digit hexadecimal number , 48 bits in lingth
+	xx:yy:zz:aa:bb:cc
+	starting 6 -manufacturer is represnented last 6 is represented for devices
+	whichever company assigns the mac addess , the starting bit is same eg:
+	00a0c90000000 TO 00a0c9ffffff
+	
+	
+	just like the phones , there's IMEI number , the unique identity , the sim slot ,it can't be changed , to do it reprogram it but MAC addresses can't be reprogrammed , MAC addresses can be spoofed though
+	
+	91crpc = find the imei number , which sim is being used by this phone ,
+	the ISPs have the data for that which sim is being used by this number same goes with sim , which sim has been switch to which IMEIs
+	
+	software vendors also have that imei
+	
+	> repeater = regenerates the data before sending and sends further (single port)
+works on physical layer
+
+> hub=  gives signal to all in devices
+
+> bridge: reduces the traffic by table addresssing , like table A contains mac address of 1 group and B gives of other group
+layer 2 working (datakink)
+
+> switch works on layer 2-3
+2 versions of switch
+
+> router when connecting the 2 networks layer 3 working
+
+> firewall:  IDS and IPS :
+placed on the networks , intrusion detection system = it alerts the system admin but doesn't do something about it
+intrusion  prevention system = it detects and prevents it
+
+> modem : modulation and demod
+
+

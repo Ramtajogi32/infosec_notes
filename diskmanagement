@@ -1,0 +1,53 @@
+types of partition:
+> primary
+>  extended
+	> logical
+
+> blkid = gives the uuid of the disks in use [universal unique id]
+
+lsblk = details of all the partitions of the harddisk  in a tree format
+
+fdisk -l  = same info points with much more info to give
+
+fdisk -l <particular disk>
+
+to create the partitions for the disk: fdisk
+fdisk <disk>
+for help: m , from that see that to make new partition: n , then p for primary
+
++10G for 10 gb or can give mb kb and gb
+
+to delete : d
+by default it deletes last but we cqn give number for specific part
+
+we can make only one extended , logical uses extended's space but primary goes for unused
+
+when we type w , it implements all the changes and to revert the changes just type q
+
+to change the id; l ,Id determines the type and  to change the type of filesystem like NTFS and all change the id
+
+
+
+NOW WE CREATED THE PARTITIONS , NOW WE NEED TO FORMAT IT:
+make filesystem:   mkfs.<filesystem>
+if there is no ntfs : yum install ntfs*
+
+
+so: mkfs.ext4 /dev/sd<whatever is the no. of ext4>
+
+like this :
+mkfs.xfs , mkfs.ntfs
+
+NOW WE NEED TO MOUNT:
+what is the default mountings: df -h
+we need to make folders foroue partitons ...like mkdir d1 d2 d3 d4..
+
+then - mount <what to mount like /dev/sd...> <where to mount where the dirs are made>
+
+mount -t <name> <what to mount> <where to  mount>
+like: mount -t ntfs /dev/sdd2 /ntfs_filesystem
+
+TO UNMOUNT:
+umount </dev/sd...>
+
+they will be unmounted by default after a restart

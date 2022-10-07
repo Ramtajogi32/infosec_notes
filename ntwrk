@@ -1,0 +1,52 @@
+LAN- 
+switch is used in this type of network , earlier hubs were used
+2m - 100m {2pc - 1000pc}
+
+CAN - campus area ntwrk
+l3 switch is used -2m -1km  {2-1000 pc}
+
+MAN - metropolitan area ntwrk
+2m - much further , router is used
+we use domestic routers, but the routers used in man is different they are much powerful and expensive
+
+WAN - btw to cities
+leasiline connection = when isp is used to connect two points in wan , it provides us the router and  cables
+
+
+wireless connection:
+PAN - personal area network
+WLAN - wireless lan {mini router} 20m - 50m
+WCAN - wifi AP {access point} 
+
+
+OSI MODEL:
+pc goes to data link layer if pvt. or when in public goes to networking layer
+in DL layer mac add devices are there: switch and bridges , in the LAN DL layer is used for comm. 
+when the data goes from pc to outer wrld , it gets to media layer , the use of this layer is just to transmit the data in media layer , mac address works not ip
+
+switchea create a CAM table that contain the info of all devices connected
+
+CAM:
+port No.(the ports of switches not the tcp ports) - Mac address
+for mac address to braodcast , the 	mac address is FF-FF-FF-FF-FF-FF
+
+
+ICMP = PROTOCOL we send the packet we get the response , if 4 req , 4 response network management protocol
+
+IGMP : internet group management protocol : manages the network checks if gateway available or not
+
+
+TRansport layer protocol;
+TCP:
+transmission control protocols: and internet protocol:
+	uses port on each sides
+	3 way handshake
+			syn  
+			ack  syn
+			ack
+	after the connection is established then the application layer protocols come in picture
+	
+	no 3 way handshake in udp 
+	NFS is used in linux  NETWORK FILE SHARING PROTOCOL	
+	
+

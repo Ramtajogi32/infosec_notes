@@ -1,0 +1,190 @@
+
+/etc/resolv.conf = to get the dns details 
+nmtui = settings only takes in effect after we deactivate and activate it again to give multiple ips: nmtui or go to folder : /etc/sysconfig/network-scripts/ do ls then check the interface script: ifcfg- after changing it : systemctl restart network for manual ip: IPADDR=192.168.1.26 PREFIX=24 {subnet} GATEWAY=192.168.1.1 DNS1=8.8.8.8 DNS2=8.8.4.4 ONBOOT=yes {on booting please assign these info to system} to make the alias names for different ip: make the copies of the file above with differen names , change the ip of the files and the device name too.. as same device can't have multiple ips , we create the alias for it
+
+
+
+dns for linux centos:
+
+1. client tools:
+	rpm -qa | grep bind
+	rpm -ql <bind utils pkg>
+	we'll look at: delv , dig , host ,mdog ,nslookup 
+	
+	1. dig command: dig <domain> : gives detailed lookup of domain
+			dim <dmn> <record> = gives specific record of the domain
+			dim <dmn> <record> +short = gives the short info 
+			dim <dmn> <record> + noall = give nothing
+			dim <dmn> <record> + noall +answer = give only answer section
+			dim <dmn> <record> +noall +answer +question = give question section also
+			
+			# what if we created a domain list and feed it to the dig:
+			dig -f <domainlist.txt>
+			
+			dig -x <ip> : hgives corrusponding name , reverse lookup
+			when we want another dns server to be used: dig <domain> @<dns server>
+			
+			# when you want to create a reverse lookup text file add -x before ip as cmdline won't do it but what if the ip are more?
+			we'll use AWK: 
+			awk'$0="-x " $0' ip_add_list.txt>ip_add_list2.txt4
+			or
+			sed -e"s/.*/-x &/" > ip_add_list3.txt
+			
+			
+			
+		2. host:
+			host <dmn>
+			host -t <rcrd type> <dmn>
+			host -t <rcrd type> <dmn> <by specific dns server>
+			
+
+
+
+
+2. servers:
+	1. cache-only dns:
+		1. set hostnme: vim /etc/hostname like: ns1.vidur.local,restart pc
+		2. yum install bind
+		3. rpm -qi | grep <pkgname>
+		4. yum install bind*
+		5.look at the file via -ql , look at the filed called "named" , grep named files from everywhere but usr
+		6. cat var/named/named.ca - it must contain domains that'll resolve
+		7. systemctl restart named.service
+		at default it runs on 127.0.0.1 
+		8. go to /etc/named.conf - add the listen-on port 127.0.0.0 ; <your ip>
+		now still other clients can't query to you as look at the option at last : allow query make it: localhost ; any; 
+		and if you wanna allow the whole network series for particular ip give subnet too: 192.168.1.1/24
+		if there are more ip : use acl, like
+		acl ns_ip_add{
+         127.0.0.1;
+         192.168.1.26;
+         192.168.1.31;
+         192.168.1.32;
+         };
+   acl mynetwork{
+         127.0.0.1;
+         192.168.1.0/24;
+		9. also allow the firewall port 53 and udp protocol , restart both services
+ 	
+ 
+ 
+	3> PRIMARY DNS SERVER 
+
+this requires the prerequisiteof the dns server , so kindly read that one and configure it then come here
+
+so now we need to set up this cahe dns server to primary and for that we need to remove the other party dns servers from the system as itself this server is a DNS server. we go to /etc/sysconfig/network-scripts/ifcfg-<your connection name>
+
+then open it with vim and replace the DNS part with the localhost i.e: 127.0.0.1 after that restart the service and network , using systemctl. then after that see in reslov.conf file in etc dir. see if the changes are made or not .
+
+the we need to make this service permanent to start from as the server starts so that it may resolve the domains and connect to the internet, becoz we have removed the other dns servers from the file , so for that use:
+
+systemctl enable named
+
+systemctl restart named
+systemctl restart network.service
+
+after this - rpm -qa | grep bind , we need that package that acts as a dns server , it looks like this: bind-9.11.4-26.P2.el7_9.9.x86_64
+
+then do rpm -qc bind-9.11.4-26.P2.el7_9.9.x86_64 - to get the configuration files for this package with their loaction
+
+go to /etc/named.conf , when we go to the bottom of this file we can see that there's a zone made , if we remove this file we will remove the cache-only dns service
+
+also there's a seperate zone file for the zones when you wanna make its called: /etc/named.rfc1912.zones as it's better to mantain there so we'll go to that file now	
+
+we go to the file and to the bottom we make our zone with the syntax 
+
+zone "drona.acharya.local" IN {
+        type master;
+        file "forward.acharya.local";
+        allow-update { none; };
+};
+
+we also change the filename to the type+localhost syntax and this file will contain our all the data regarding the zone
+allow update means dynamic dns - so for now we'll disable it, save and exit
+
+then we go to /var/named , we'll find a flie there called the named.localhost, this is the zone file, copy it:
+cp named.localhost forward.acharya.local , remember to give the name of the file you gave earlier
+whosoever be the owwner of these files , the group they should belong to must be "named" so we change the group of our newly created file:
+chgrp named forward.acharya.local
+now we make and edit the records in the new file:
+
+looks like this: 
+
+
+$TTL 1D
+@       IN SOA  drona.acharya.local root.acharya.local (
+                                        28072022        ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+drona.acharya.local.  IN      A       192.168.29.248
+                IN      NS      drona.acharya.local.
+acharya.local.  IN      A       192.168.29.248
+drona           IN      A       192.168.29.248
+www             IN      CNAME   acharya.local.
+emp1            IN      A       192.168.29.32
+
+        AAAA    ::1
+
+
+to check whether everything is good or not: named-checkconf = checks named.conf files
+named-checkzone = for zone check this command requires syntax
+named-checkzone <zonename> <location of zonefile>
+named-checkzone drona.acharya.local /var/named/forward.acharya.local
+
+then restart named and iptables
+
+
+
+
+4>. 		MASTER ZONE AND MULTIPLE ZONES:
+first of all we create a zone in the named.rfc.. file , make the different zones as per the previous file in primary dns server and also make sure that the files that are nameed mustn't conflict with each other and , then make the name files in the /var/named directory
+
+change their groups as usual to named 
+
+the content should be as same as of the file in the previous writeup of primary_dns and there will be just ine change : in the second line after the $TTL line , we need to add this : $ORIGIN <domain name> , we add this line when the domainzone name  and the fqdn doesn't match we add this line
+change the file content as needed
+restart the services ,and firewall as per needed
+
+
+5> 			REVERSE ZONE:
+
+make a zone in the named.rfc...... file as per given format for reverse zone:
+the ip address till the network part is written in reverse with some domain added at last
+
+zone "29.168.192.in-addr.arpa" IN {
+        type master;
+        file "reverse.acharya.local";
+        allow-update { none; };
+};
+
+while making the file we can copy two files: either the named.loopback or the forward file that we created during the primary dns servermaking
+I cpied the forward one file:
+and it should be configured like this:
+$TTL 1D
+@       IN SOA  drona.acharya.local root.acharya.local (
+                                        28072022        ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+@               IN      NS      acharya.local.
+@               IN      PTR     drona.acharya.local.
+248             IN      PTR     acharya.local
+249             IN      PTR     mahavir.local
+250             IN      PTR     mantung.local
+
+add how many you want and then restart the service
+
+
+6> 		FORWARDER:
+ for making the forwarder dns that forwards the query to the other dns for load balancing , just type these strings in the /etc/named.conf file after the "recursion yes;" option :
+
+forwarders {8.8.8.8; 8.8.4.4; };
+then it will forward the query to these servers and won't do itself
+
+ 
+
+
+ 				

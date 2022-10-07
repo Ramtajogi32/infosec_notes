@@ -1,0 +1,23 @@
+yum install perl perl-CGI
+
+install them , you need to have cgi_module , check via: httpd -M | grep -i cgi , make sure selinux is disabled , to check : sestatus , to disable: vim /etc/systemctl/selinux and make it "disabled"
+
+
+open the httpd.conf file , if you on vim : give the command: ":set number" and see the line number 247 , it says "ScriptAlias /cgi-bin/ "/var/www/cgi-bin/" this is an alias , we can call it directly via: cgi-bin
+
+few lines under it there will be a directory tag with some values , modify them with this:
+AllowOverride None
+     Options +ExecCGI
+     AddHandler cgi-script .cgi .pl .py .sh
+     Require all granted
+
+restart service 
+to check we make a file in the location in the: /var/www/cgi-bin/test.cgi and paste this:
+#!/usr/bin/perl
+print "Content-type: text/html\n\n";
+print "<h1> server memory usage: </h1>";
+print "<pre>";
+exec("free -h");
+print("</pre>");
+
+we can apply password to this file too , use <dirctory> tag.....

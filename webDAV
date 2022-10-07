@@ -1,0 +1,37 @@
+used in developer env , this tool is for file handling via browser
+
+you must first have the dav_fs_module in the server if not use: yum install httpd*
+how to check: httpd -M | grep fs
+
+make the directory /var/www/html/webdav - make the owner and grp apache via chown apache:apache /var/www/html/webdav and change its permissions to 777 via /var/www.....
+go to httpd.conf file in etc/httpd/conf/ and like this: place the content:
+<virtualhost 192.168.29.248:80>
+        ServerName drona.acharya.local
+        DocumentRoot /var/www/html/
+        DirectoryIndex index.html
+        <Directory /var/www/html/webdav>
+                DAV on
+        </Directory>
+</virtualhost>
+
+save and exit, restart service
+
+do curl -v -X OPTIONS http://192.168.29.248/webdav/       {give your own ip and port}
+ check which methods it support
+or if you use https ssl:
+ curl -i -k -X OPTIONS https://192.168.29.248/webdav/
+
+
+ now we put some file into this dir:  
+ curl -X PUT -d "hello from curl" http://192.168.29.248/webdav/hellocurl.txt
+
+ or use cadaver:
+ in kali it's there: cadaver http://192.168.29.248/webdav/
+ be sure to give exact file location in cadaver or else it shows request refused or closed
+
+ use htpasswd for access auth via: htpasswd -c /etc/httpd/htpasswd <username> and paste these lines onto the virtualhost directory tag after dav on line:
+    AuthType Basic
+    AuthName "dav"
+    AuthUserFile /etc/httpd/htpasswd
+    Require valid-user
+restart the service

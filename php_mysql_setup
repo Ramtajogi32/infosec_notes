@@ -1,0 +1,31 @@
+
+
+for installing the php:
+    ayou need : epel-release , yum-utild
+    also you need remi repo 
+
+    after that do yum repolist all: to enable the repo remi one , select the repo , eg: remi repo 8.0 we need
+    to enable it: yum-config-manager --enable remi-php80
+    yum install php php-common php-opcache php-mcrypt php-cli php-gd php-curl php-mysqlnd php-xml php-mbstring
+
+    systemctl restart httpd.service ,php -v
+
+
+    mysql:
+    download the mysql community server rpm file  - prefer dev.mysql.com , it must be 11kb something or slightly big or small
+    then yum install <mysql server rpm repo>
+    yum repolist all , enable disable the pkgs as per you wish - remove the after "/" part while giving the name in enabling repos
+
+    if the error comes for gpg check go to /etc/pki/rpm-gpg and wget rpm --import https://repo.mysql.com/RPM-GPG-KEY-mysql-2022
+    alternatively we can disable the gpg check: go to /etc/yum.repo.d/mysql-community.repo , check the version u installing and under that version edit gpgcheck=0 from 1
+
+    then: systemctl start mysqld.service , systemctl enable mysqld.service
+    check via netstat -nltup
+    also grep "temporary password" /var/log/mysqld.log = it generates a temp password
+    looks like this: tMgjN:Do58+j
+    then mysql -u -<user> -p
+    it prompts user to reset password , for that:
+    ALTER USER root@localhost IDENTIFIED WITH mysql_native_password by '<password>';
+    it needs a complex passwrd that includes: an uppercase , a lowercase , numeric , and special chars
+
+ 

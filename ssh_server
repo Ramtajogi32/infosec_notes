@@ -1,0 +1,32 @@
+ssh server:
+ secure shell - gives the remote access of the server , telnet's successor : ssh - linux , telnet - windows
+ 
+ even after we remove the ssh lib , while using ssh server , it won't terminate the session
+ config file: /etc/ssh/ssh_config
+ 
+ installation:
+>  yum install openssh-server
+> restart the service: systemctl restart sshd.service = or won't be able to connect
+ the port is allowed default by firewall
+ change the port:
+ go to config file and change the port via "Port" option in the file , ListenAddress is the address to listen to which ip address: {attack vector down} , can give multiple IP address
+ 
+ 
+ the -p switch helps the port to specify : ssh -p
+  ps: allow the port from firewall
+  
+  > only allow specific users or don't allow root: Permitrootlogin change it to NO and uncomment it
+  
+  > login via public and private key: 
+  change the publickeyauthentication - yes and uncomment it
+  and change the passwordauthentication to NO
+  go to config file : there you'll see the Authorizedkeyfiles <file location> default is .ssh/authorized_keys
+  
+  ssh-keygen --help = for help
+  we'll use rsa
+  > ssh-keygen -t rsa
+  this will create 2 files: .pub and pvt files for pub and pvt key
+  the public key will be named to authorized_keys and transfer the other one to those of your local pc, also the pvt key file must have the permission - 600
+  
+  so to login with the key:
+  ssh -p <port> -i <key location> <usr>@<ip>

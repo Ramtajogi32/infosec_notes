@@ -1,0 +1,35 @@
+give ip address via ip ad
+ip up <wifi name via infconfig>
+
+give static ip via: 
+ssh into the server
+yum repolist all , now we need to instal EPEL , yum install epel-release.noarch
+
+yum repolist all
+then install all the repos in screenshot
+yum -ivh <screenshot>
+
+we need bash-completion.noarch = this auto completes the commands, also do yum install bash*
+ 
+ there are also groups of packages that we can install for certain tasks
+ 
+ yum groupslist
+ the choose the grp u want to install , like we want development and creative workstation
+ 
+ if want info then do: yum groups info "<name>"
+ also can check summary via groups summary "<name>"
+ 
+ then to install  : yum groups install "<name>"
+ if wanna remove: yum groups remove "name" -y
+ it caches the package tho ... so that it can reinstall faster : /var/cache/yum/x86_64/7/base/packages
+ 
+ for gui use mate or gnome desktop or kde
+ yum group install mate/kde/gnome
+ 
+ then install server with GUI group
+ use systemctl set-default graphical.target
+ then systemctl isolate graphical.target
+ 
+ 
+ 
+ 

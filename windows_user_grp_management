@@ -1,0 +1,30 @@
+to uninstall:
+go to programs and features and then uninstall
+go to computer management:
+then go to users and groups : change , make and edit users as you want , use restrictions for the users for passwords , and all
+
+fo rwindows xp admin account is accessible by default
+
+1.user:
+	in windows 7 and 10 cannot go to system temp folder but can go to user -> temp
+
+in windows xp can't do shit
+
+2. power user: win XP: 
+	it acts as the vice captian , can' change the admin decisions but can create new and change the normal users shit
+	
+	in windows 7 when a non-auth user tries to install something eithe r UAC prompts or it gets installed into it's own profile , show hidden files and go to Appdata -> local and see the files for urself,
+	but when the admin installs it goes to program files and is accessble to all
+	
+	user -> public -> accessible to all
+	
+TO disable control panel access: go to local policy group editor -> control panel -> prohibit control panel to access  is disabled for admin too
+
+to ban then from personalising the desktop:
+	LGPE(lcl grp plcy edtr): -> admintools-> control panel  -> personalization
+
+to ban the cmd: go to system in LGPE(lcl grp plcy edtr): -> admintools-> control panel
+
+also to disable windows auto updates:  go to system in LGPE(lcl grp plcy edtr): -> admintools-> control panel
+
+to remove external devices to be used in windows: go to system in LGPE(lcl grp plcy edtr): -> admintools-> control panel then to removable storages

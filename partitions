@@ -1,0 +1,12 @@
+fstab important file of linux
+
+swapon = to see the swap memory
+to extend it:
+fdisk <location of swap>
+
+then do partitions
+
+then do mkswap <loc> to format the swap
+blkid will show the partitions you did
+then swapon again: swapon <disk>
+to change priority

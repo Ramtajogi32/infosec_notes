@@ -1,0 +1,72 @@
+packet managers:
+for finding the rpms = rpmfind.net	
+
+rpm - red hat package manager
+package  = collection of files
+"pkgnme-version-release-architecture-extension"
+rpm contains the binaries, while srpm contains the source code  of the binary , we have to compile it before executing
+i386 = 32 bit, x86 = 64 bit, noarch = platform independent
+
+/etc/os-release: gives the details of the os
+
+rpm -q <app/package> = gives if installed or not
+
+if we don't know the package name = rpm -qa -> gives the name of all packages
+then we can grep it
+
+for latest installation: rpm -qa --last
+-qi = gives the info of a particular pkg
+-ql = gives the list of all the files + location of that pkg  
+they come with -q<commands>:
+c = config files , d= doc files , r = dependencies of the packages, L = lists the pkgs liscences
+-q --provides -> who's providing the pkg 
+s = 
+
+when you wanna be sure what that pkg u downloaded does before downloading is just give this command:
+or not even downloading just give the command with the link to download it
+rpm -qpi <pkg location>/<link>
+
+-Vv = verifies instead of -q
+
+
+installations:
+rpm -Vv <pkgname> => gives that if some dependencies are missing or all are available
+
+pacakeg selection:
+to get which package is the part of which one -> rm -qf <package>
+
+for installation of pkg:
+rpm -ivh i for installl v for verbose h for human readable
+to check if installed or not -> rpm -qai | grep <pkg> here i means info
+
+rpm --nodeps -ivh <pkg> -> pkg dependent available in system or not , just install it
+
+
+to remove:
+rpm -evh <pkg>
+rpm -Uvh  <pkg>   U for upgrade
+
+to install all the packages that are with extension rpm or any other:
+rpm -ivh "*.rpm"
+
+
+rpm packages = elrepo , 
+yum check-updates
+yum udate info
+yum update
+yum search <pkt>
+yum install bash*
+yum remove <pkt>
+mostly, never remove dependencies
+
+yum provides <application> = where to get repo
+
+yum downgrade <pkg> = just to downgrade
+yum deplist <pkg>= dependencies list
+
+yum reinstall <pkg>
+yum downgrade <pkg> --skip-broken
+yum makecache
+yum history
+yum languageavaible
+yum distro-sync = syncs distro , says to update if nnew version comes

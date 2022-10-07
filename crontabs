@@ -1,0 +1,38 @@
+website = crontab.guru
+
+
+cron jobs:
+for automation of linux to perform taska at a particular period of time:
+
+vim /etc/crontab
+permissions: rw-r
+
+stars represents time period according to their placement like day , minute and months etc...
+
+how to schedule:
+	minute hour day(month) month day(week) username command_to_be_executed
+	eg: 
+	10 10 * * 6 {at saturday at 10:10}
+	***** means every minute run the command
+	10 * * * * {every 10 minute}
+	this thing can also do arithmatic ops:
+	like: */5 * * * * {* value should be divided by 5 then use}
+
+	10 10 * * * root clamscan --remove -r /opt/  = {at 10:10 please run the scan command the opt via clamscan}
+
+PS:echo `ls` prints what the command displays in the desktop rather than printing ls on the screen
+PS:tar -cvf log-`date +\%F-\%H-\%M\`.tar \var\log
+
+
+to execute a file:
+	 there are some dirs like cron.daily or ... place the binary files in it and they'll get executed at that time frame
+	 also the file's content must be set in a particular format
+	
+	
+PS: /var/spool/mail/<usr>  = the mail file for the usr to give the changes happend to system , you have to give MAILTO=<usr> condition to the cron file or job then run the file and thus the mail will be sent to the particular user
+
+crontab -l and crontab -e = to see and set the cron tabs for  the particular user
+crontab -l -u <usr> and crontab -e -u <usr> = to see and set the cron tabs for  the particular another user
+
+
+

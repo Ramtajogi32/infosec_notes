@@ -1,0 +1,47 @@
+download phpmyadmin first , download the current latest version at my time it was : 5.2.0 , download the all_languages.zip file for ease 
+uni\zip it via : unzip phpmyadmin..... {cammand}
+now take that  newly unzipped folder to the  /var/www/html or the specific directory you wanna create the admin panel for your website , if you use different location , 
+please remember to include that in your httpd.conf file , and change its name to phpmyadmin for ease of access
+now we need to change the owner of this file from root to apache : chown -vR apache:apache <folder>
+
+now check your localhost/phpmyadmin website or any other domain you used , you will see a login page , use the creds:  username:root
+                                                                                                                       password: <the one you gave for mysql>
+
+you might be getting an error above the taskbar panel of the desktop saying: needs a secret passphrase {blowfish_secret} : that's due to the passphrase we need to provide it in the config file : config.sample.inc.php
+it needs a passphrase for maintaining a config file , so we're gonna give it to him
+change it's name:
+cp config.sample.inc.php config.inc.php
+
+the file needs 32 bit complex passphrase so we generate it via openssl's random method:  openssl rand -base64 22 , it's 22 not 32 , it's not a typo!!!!!!
+
+now download wordpress from wordpress.org , download latest , at my time it was 6.0.1   , unzip it , move that folder  to /var/www/html ,change the ownership to apache
+chown -vR apache:apache <folder> 
+now we need to give some executable and wr permissions:
+chmod -Rv 0755 wp-includes/ wp-admin/js/ wp-content/themes/ wp-content/plugins/
+
+also we need to change it's config file: vim /etc/httpd/conf/httpd.conf
+
+add this: also if you have certs and all and different ip , use creds as per wish
+
+Listen 8080
+<Virtualhost 192.168.29.248:8080>
+#        SSLEngine on
+#        SSLCertificateFile /etc/pki/tls/certs/ca.crt
+#        SSLCertificateKeyFile /etc/pki/tls/private/ca.key
+        ServerName drona.acharya.local
+        DocumentRoot /var/www/html/wordpress
+        DirectoryIndex index.php
+
+
+</Virtualhost>
+
+
+
+after we configured wp , we need to create a database , now phpmyadmin comes in picture ,we create a db from here:
+go to database menu and just give a name for now and press create "worpress_dabatase"
+
+
+go to wordpress site choose english , let's go, and put the db name , username , password as per phpmyadmin page and host is localhost and then login
+
+give site title .....and all 
+done!

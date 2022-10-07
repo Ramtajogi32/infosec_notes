@@ -1,0 +1,9 @@
+user env:
+.bashrc:
+PATH=$PATH:/tmp/bin
+not permanant , to make it: 
+method 1:
+update bashrc: or bash
+
+use export command:
+export TMP_BIN

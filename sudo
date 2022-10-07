@@ -1,0 +1,71 @@
+sudo :
+super user do
+root        ALL=(ALL) ALL
+               HOSTS   ANY USER  OTHERS(3RD PRTY)
+               1ST ALL says rule applies to all hosts
+               2nd = user in the 1st column can run it with privelages
+               3rd says any command can be run
+               
+   when I say:
+  root 		u1,u2=(ALL) ALL  u1 and u2 can access root
+  
+  ALL=(armour:armour)  ALL this means root can use the pwr of armour user and grp from any pc 
+  
+  sudo -l displays the powers
+  
+  
+  sudo -u <usr> command
+  there's  a group called wheel that gives the same power as root
+  groups <usr> - displsys grps
+  
+  visudo checks before saving the /etc/sudoers file , best option
+  
+  
+  when : armour localhost=(ALL) ALL
+  whenever host is localhost, armour can run any cmmnd 
+  
+  when armour=(r1) ALL
+  
+  we learnt the user alias and the command alias
+  
+  now comes the 3rd ALL:
+  the command alias
+  # we have to define the aliases then we can give the command like this:
+  Cmnd_Alias ARMOUR_CMD = usr/bin/id,usr/bin/mkdir,usr/bin/ls
+  
+  then we give the:
+  USER1     ALL=(ALL)   ARMOUR_CMD
+  
+  
+  NO PASSWORD:  usr doesn't need any kind of password to run these commands and PASSWD:  needs passwords for this
+  USER1     ALL=(ALL)   NOPASSWD:  ARMOUR_CMD, PASSWD: /usr/bin/sudo
+  
+  
+  how to reset root password?:
+ halt the boot loader in the options mode
+ press e for rescue mode
+ turn "ro" to:
+ rw init=/sysroot/sbin/sh go to rw mode and start hotw hi i need this command
+ 
+ 
+ to set passwd on grub: https://www.youtube.com/watch?v=LTubAMSjqlA
+ SElinux is disabled , means changes can't be saved , now give certain commands 
+ to prevent this , implement password in grub go to /etc/grub.d/10_linux
+ 
+then: grub2-mkpasswd-pbkdf2, copy the hash given, 
+vim /etc/grub.d/10_linux -> go to end of file and then edit as this :
+
+set superusers="Siddh"
+password_pbkdf2 Siddh  
+then  grub2-mkcinfig -o /boot/grub2/grub.cfg
+
+OR
+/boot/grub2/grub.cfg
+give command:
+grub2-setpassword
+set it and cat the new file that nis made in the above folder: user.cfg
+then we'll get the password 
+
+
+what if we forget this password too?
+https://www.computernetworkingnotes.com/linux-tutorials/how-to-reset-grub-password-in-linux.html

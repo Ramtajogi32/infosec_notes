@@ -1,0 +1,52 @@
+email tracking:
+	there are various agents: 
+		1. MUA: mail user agent: they are the application or the webservices that manage the mails and let us do too
+		eg: mozzila thunderbird , microsoft outlook
+		
+		
+		2. mail transfer agents: when we mail the recipient the mail is forwarded to our service provider's mail  it's done by mail transfer agent's to transfer it to server. eg: SMTP
+			port: 25 and ssl:
+		
+		3.Mail delivery agent:
+			this agent is for delivering the mail from the server to us
+			they are of two types: IMAP and POP	
+			
+how to setup:
+	download the user-agent in your system . I'd prefer thunderbird since it's easy to setup
+	
+	CHOOSE FROM IMAP OR POP , imap has local copy in pc and one in mail but pop has local copy only nothing in server
+	if you don't want it'll go default
+	send a mail to yourself and then check from the webmail client like gmail and right click on the gmail and choose option "show original" and read the details
+	
+	
+	read from bottom: 
+	<content>
+	<from> {not to trust this}
+	<to> 
+	<message id> { this is the accurate mark that where the real mail is , like where it is from }
+	
+	<received> {this gives the private and public ip}
+	<return path> {also good for further knowledge}
+	
+	
+MOZZILA:
+	<body in form of html>
+	<from>
+	<to>
+	<received> <actual public ipv6> <ip mozzila used to route>
+	
+
+
+OUTLOOK:
+	<content>
+	<from>
+	<to>
+	<message id> {shows that the outlook.com or the application is used to send the mail or any other client}
+	
+	ps: if the mail is not sent from application you won't see the sender's public ip
+	
+if teh received says unknown or localhost , it's either proxy or other blocking 
+	
+
+TOOLS:
+	[ip2location] - gives the path of the mail - where , where it went , just place the email headers we got from above clients , paste eveything if you don't know what to send

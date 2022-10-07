@@ -1,0 +1,21 @@
+quota:
+
+quotacheck -cugv <location>
+2 new files are created that are .grp and .usr
+
+then use:
+quotaon --help
+quotaon -ap
+then we do edquota to edit quota
+
+to get report status for quota: repquota
+
+LVM:
+must have the lvm2 pkg or do yum install lvm2
+pvdisplay = physical volume display
+pvcreate = creates primary vol to physical
+
+vgdisplay = volume group display
+vgcreate = create vg
+
+xfs_growfs = for 

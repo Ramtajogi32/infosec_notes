@@ -1,0 +1,10 @@
+in windows server different workgroup pcs can be accessed via ip 
+
+> the purpose of static ip is that if they don't get anu dhcp server then it musn't not connect to the network
+
+> whenever we add a role to the server , the file get placed in the c drive -> windows -> system32
+
+> what if there's no dhcp sever an no ip we assign: we get the ip and it assigns to itself called link local address - APIPA {automatic private ip addressing }
+
+> DHCP:
+	we need to make a scope first for the dhcp server and also the 
