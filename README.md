@@ -10,5 +10,6 @@
 Further changes will be added as the journey continues
 
 **Please feel free to contribute whatever you may like**
-Feel free to contact 
+
+Feel free to contact : 
 ![Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Ftwitter.com%2Fbabe_eliza24)
