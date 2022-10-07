@@ -286,8 +286,8 @@ link hijacking vulnerability:
 				
 			or if you have the server and you want to store the ip seperately you can there's php script that we can give to index.html , converting it to index.php
 			
-	13.	callerid sniffing:
-		crazycall.net
+	13.	callerid spoofing:
+		crazycall.net - there are similar websites like this that help in changing the callerid
 						
 				
 	
